@@ -1,6 +1,5 @@
 import React from "react"
 import { Link, Outlet } from "react-router-dom"
-import SinglePage from "../pages/SinglePage"
 
 const About = () => {
   return (
