@@ -1,54 +1,44 @@
-import React, { useState, useEffect } from "react";
-import styles from "./TodoItem.module.css";
+import React, { useState, useEffect } from "react"
+import styles from "./TodoItem.module.css"
+import { FaTrash } from "react-icons/fa"
 
-function TodoItem(props) {
-  const { completed, id, title } = props.todo;
+const TodoItem = props => {
+  const [editing, setEditing] = useState(false)
+
+  const handleEditing = () => {
+    setEditing(true)
+  }
+
+  const handleUpdatedDone = event => {
+    if (event.key === "Enter") {
+      setEditing(false)
+    }
+  }
+
   const completedStyle = {
     fontStyle: "italic",
     color: "#595959",
     opacity: 0.4,
     textDecoration: "line-through",
   }
-  const [state, setState] = useState({
-    editing: false,
-  });
 
-  const handleEditing = () => {
-    setState({
-      editing: true,
-    })
+  const { completed, id, title } = props.todo
+
+  let viewMode = {}
+  let editMode = {}
+
+  if (editing) {
+    viewMode.display = "none"
+  } else {
+    editMode.display = "none"
   }
 
-  const [viewMode, setViewMode] = useState({
-    display: "none"
-  });
-  const [editMode, setEditMode] = useState({
-    display: "none"
-  });
   useEffect(() => {
-
-    if (state.editing) {
-      setViewMode({
-        display: "none"
-      });
-      setEditMode({
-        display: "inline-block"
-      });
-    } else {
-      setViewMode({
-        display: "inline-block"
-      });
-      setEditMode({
-        display: "none"
-      });
+    console.log('Adding');
+    return () => {
+      console.log("Cleaning up...")
     }
-  }, [state]);
-
-  const handleUpdatedDone = event => {
-    if (event.key === "Enter") {
-      setState({ editing: false })
-    }
-  }
+  }, [])
 
   return (
     <li className={styles.item}>
@@ -59,7 +49,9 @@ function TodoItem(props) {
           checked={completed}
           onChange={() => props.handleChangeProps(id)}
         />
-        <button onClick={() => props.deleteTodoProps(id)}>Delete</button>
+        <button onClick={() => props.deleteTodoProps(id)}>
+        <FaTrash style={{ color: "orangered", fontSize: "16px" }} />
+        </button>
         <span style={completed ? completedStyle : null}>{title}</span>
       </div>
       <input
